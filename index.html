@@ -298,8 +298,9 @@
     
     <!-- Clearly Visible Top Navigation Bar -->
     <nav class="main-nav">
-      <button class="nav-btn active" onclick="switchTab('iframe-tab', this)">Interactive Gallery</button>
-      <button class="nav-btn" onclick="switchTab('photos-tab', this)">More Photos</button>
+      <button class="nav-btn active" onclick="switchTab('iframe-tab', this)">Wedding Highlights</button>
+      <button class="nav-btn" onclick="switchTab('photos-tab', this)">Haldi & Tilak</button>
+      <button class="nav-btn" onclick="switchTab('photos-tab1', this)">Wedding Day</button>
     </nav>
   </header>
 
@@ -321,6 +322,12 @@
 
     <!-- Tab 2: Media Gallery Section -->
     <div id="photos-tab" class="tab-content">
+      <div class="local-gallery-wrapper" id="galleryWrapper">
+        <!-- Photo Sections render dynamically -->
+      </div>
+    </div>
+    <!-- Tab 3: Media Gallery Section -->
+    <div id="photos-tab1" class="tab-content">
       <div class="local-gallery-wrapper" id="galleryWrapper">
         <!-- Photo Sections render dynamically -->
       </div>
