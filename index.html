@@ -8,11 +8,12 @@
   <!-- Google Fonts for Elegant Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
     :root {
       --gold: #D4AF37;
+      --gold-dark: #b89228;
       --soft-white: rgba(255, 255, 255, 0.94);
       --text-dark: #2C221E;
       --shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
@@ -27,25 +28,24 @@
     html, body {
       height: 100%;
       width: 100%;
-      overflow: hidden; /* Prevents outer page double scrollbars */
       font-family: 'Montserrat', sans-serif;
       color: var(--text-dark);
     }
 
     body {
-      /* Elegant Wedding Background Theme */
       background: linear-gradient(rgba(20, 15, 12, 0.4), rgba(20, 15, 12, 0.4)), 
                   url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat fixed;
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 1.5rem;
+      overflow: hidden;
     }
 
     /* Header Styling */
     header {
       text-align: center;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
       padding: 1rem 2rem;
       background: var(--soft-white);
       backdrop-filter: blur(8px);
@@ -54,7 +54,7 @@
       border: 1px solid rgba(212, 175, 55, 0.4);
       width: 100%;
       max-width: 900px;
-      flex-shrink: 0; /* Ensures header doesn't shrink when iframe scales */
+      flex-shrink: 0;
     }
 
     .title-sub {
@@ -69,7 +69,7 @@
 
     header h1 {
       font-family: 'Great Vibes', cursive;
-      font-size: 3.5rem;
+      font-size: 3.2rem;
       color: var(--text-dark);
       font-weight: 400;
       line-height: 1.1;
@@ -78,37 +78,59 @@
     header h1 span {
       font-family: 'Playfair Display', serif;
       font-style: italic;
-      font-size: 2rem;
+      font-size: 1.8rem;
       color: var(--gold);
       margin: 0 0.5rem;
     }
 
-    .divider {
+    /* Navigation Menu */
+    nav {
+      margin-top: 0.8rem;
       display: flex;
-      align-items: center;
       justify-content: center;
-      gap: 10px;
-      margin-top: 0.4rem;
+      gap: 1rem;
     }
 
-    .divider-line {
-      height: 1px;
-      width: 40px;
-      background: var(--gold);
-    }
-
-    .divider-symbol {
-      color: var(--gold);
+    .nav-btn {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--text-dark);
+      padding: 0.5rem 1.2rem;
+      border-radius: 20px;
+      font-family: 'Montserrat', sans-serif;
       font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
-    /* Full Page Expanded iFrame Container */
+    .nav-btn:hover, .nav-btn.active {
+      background: var(--gold);
+      color: #FFFFFF;
+    }
+
+    /* Main Content */
     main {
       width: 100%;
-      flex: 1; /* Automatically expands to take all remaining vertical space */
+      flex: 1;
+      display: flex;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tab-content {
+      width: 100%;
+      height: 100%;
+      display: none;
+    }
+
+    .tab-content.active {
       display: flex;
     }
 
+    /* iFrame Section */
     .iframe-wrapper {
       width: 100%;
       height: 100%;
@@ -126,50 +148,270 @@
       display: block;
     }
 
-    /* Mobile Responsive Adjustments */
+    /* Gallery Section */
+    .local-gallery-wrapper {
+      width: 100%;
+      height: 100%;
+      background: var(--soft-white);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      overflow-y: auto;
+    }
+
+    .category-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--text-dark);
+      margin: 1rem 0 0.8rem 0;
+      padding-bottom: 0.3rem;
+      border-bottom: 2px solid var(--gold);
+      display: inline-block;
+    }
+
+    .category-section:first-child .category-title {
+      margin-top: 0;
+    }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .image-card {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .image-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold);
+      box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+    }
+
+    .image-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Download Overlay Button */
+    .download-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--text-dark);
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      z-index: 5;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .download-btn:hover {
+      background: var(--gold);
+      color: #FFFFFF;
+      transform: scale(1.1);
+    }
+
+    .download-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 8px;
+      border: 2px solid var(--gold);
+    }
+
     @media (max-width: 600px) {
-      body {
-        padding: 0.8rem;
-      }
-      header {
-        padding: 0.8rem 1rem;
-        margin-bottom: 0.8rem;
-      }
-      header h1 {
-        font-size: 2.6rem;
-      }
-      header h1 span {
-        font-size: 1.5rem;
-      }
+      body { padding: 0.8rem; }
+      header { padding: 0.8rem 1rem; }
+      header h1 { font-size: 2.4rem; }
+      header h1 span { font-size: 1.4rem; }
+      .nav-btn { padding: 0.4rem 0.8rem; font-size: 0.75rem; }
+      .image-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.8rem; }
+      .download-btn { width: 32px; height: 32px; top: 6px; right: 6px; }
+      .download-btn svg { width: 15px; height: 15px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Heading Updated to Nisha Weds Sumit -->
+  <!-- Header Section -->
   <header>
     <p class="title-sub">The Wedding Celebration Of</p>
     <h1>Nisha <span>weds</span> Sumit</h1>
-    <div class="divider">
-      <div class="divider-line"></div>
-      <span class="divider-symbol">&#10084;</span>
-      <div class="divider-line"></div>
-    </div>
+    
+    <nav>
+      <button class="nav-btn active" onclick="switchTab('iframe-tab', this)">Interactive Gallery</button>
+      <button class="nav-btn" onclick="switchTab('photos-tab', this)">More Photos</button>
+    </nav>
   </header>
 
-  <!-- Expanded Full-Page iFrame Section -->
+  <!-- Main Container -->
   <main>
-    <div class="iframe-wrapper">
-      <iframe 
-        allowfullscreen 
-        id="fotoowl-iframe" 
-        src="https://site.fotoowl.ai/rkstudi64/gallery/333143?embed=true&cover=true&pass_key=326641" 
-        loading="lazy" 
-        allow="camera"
-        title="Nisha & Sumit Wedding Gallery">
-      </iframe>
+    <!-- Tab 1: Foto Owl iFrame Section -->
+    <div id="iframe-tab" class="tab-content active">
+      <div class="iframe-wrapper">
+        <iframe 
+          allowfullscreen 
+          id="fotoowl-iframe" 
+          src="https://site.fotoowl.ai/rkstudi64/gallery/333143?embed=true&cover=true&pass_key=326641" 
+          loading="lazy" 
+          allow="camera"
+          title="Nisha & Sumit Wedding Gallery">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Tab 2: Google Drive Media Gallery Section -->
+    <div id="photos-tab" class="tab-content">
+      <div class="local-gallery-wrapper" id="galleryWrapper">
+        <!-- Google Drive Photo Sections will render here -->
+      </div>
     </div>
   </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="Full view">
+  </div>
+
+  <script>
+    // Replace 'FILE_ID_X' placeholders below with actual Google Drive File IDs
+    const photoCategories = [
+      {
+        title: "Haldi, Mehndi & Tilak",
+        photos: [
+          'https://lh3.googleusercontent.com/d/FILE_ID_1',
+          'https://lh3.googleusercontent.com/d/FILE_ID_2',
+          'https://lh3.googleusercontent.com/d/FILE_ID_3'
+        ]
+      },
+      {
+        title: "Wedding Day",
+        photos: [
+          'https://lh3.googleusercontent.com/d/FILE_ID_4',
+          'https://lh3.googleusercontent.com/d/FILE_ID_5',
+          'https://lh3.googleusercontent.com/d/FILE_ID_6'
+        ]
+      }
+    ];
+
+    const downloadIconSvg = `
+      <svg viewBox="0 0 24 24">
+        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+      </svg>
+    `;
+
+    function downloadPhoto(event, photoUrl) {
+      event.stopPropagation();
+      window.open(photoUrl, '_blank');
+    }
+
+    const galleryWrapper = document.getElementById('galleryWrapper');
+
+    photoCategories.forEach(category => {
+      const section = document.createElement('div');
+      section.className = 'category-section';
+
+      const title = document.createElement('h2');
+      title.className = 'category-title';
+      title.innerText = category.title;
+      section.appendChild(title);
+
+      const grid = document.createElement('div');
+      grid.className = 'image-grid';
+
+      category.photos.forEach(path => {
+        const card = document.createElement('div');
+        card.className = 'image-card';
+        card.onclick = () => openLightbox(path);
+
+        const img = document.createElement('img');
+        img.src = path;
+        img.alt = category.title;
+        img.onerror = function() {
+          this.src = 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=500&q=80';
+        };
+
+        const dlBtn = document.createElement('button');
+        dlBtn.className = 'download-btn';
+        dlBtn.title = 'Download Photo';
+        dlBtn.innerHTML = downloadIconSvg;
+        dlBtn.onclick = (e) => downloadPhoto(e, path);
+
+        card.appendChild(img);
+        card.appendChild(dlBtn);
+        grid.appendChild(card);
+      });
+
+      section.appendChild(grid);
+      galleryWrapper.appendChild(section);
+    });
+
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+
+      if(tabId === 'iframe-tab') {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    }
+
+    function openLightbox(src) {
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      lightboxImg.src = src;
+      lightbox.classList.add('active');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+    }
+  </script>
 
 </body>
 </html>
