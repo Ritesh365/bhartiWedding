@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Special Moments</title>
+  <style>
+    :root {
+      --bg-color: #FAF7F2;
+      --card-bg: #FFFFFF;
+      --text-main: #332C27;
+      --accent: #C5A059;
+      --accent-light: #F4EAD3;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    header h1 {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      color: var(--text-main);
+      letter-spacing: 1px;
+    }
+
+    header p {
+      color: var(--accent);
+      font-size: 1.1rem;
+      font-style: italic;
+      margin-top: 0.5rem;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    @media (min-width: 850px) {
+      .container {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .card-title {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      align-self: flex-start;
+      border-bottom: 2px solid var(--accent-light);
+      padding-bottom: 0.3rem;
+      width: 100%;
+    }
+
+    /* Interactive Photo Section */
+    .photo-container {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .photo-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .photo-container:hover img {
+      transform: scale(1.05);
+    }
+
+    .photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%);
+      display: flex;
+      align-items: flex-end;
+      padding: 1.2rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .photo-container:hover .photo-overlay {
+      opacity: 1;
+    }
+
+    .overlay-text {
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 300;
+    }
+
+    .gallery-controls {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--accent);
+      background: transparent;
+      color: var(--text-main);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* Dynamic iFrame Container */
+    .iframe-wrapper {
+      width: 100%;
+      height: 380px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #EAE5D9;
+      background: #FDFDFD;
+      position: relative;
+    }
+
+    .iframe-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .iframe-hint {
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 0.8rem;
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>A &amp; R</h1>
+    <p>Forever Begins Today</p>
+  </header>
+
+  <main class="container">
+    
+    <!-- Photo Showcase Section -->
+    <section class="card">
+      <h2 class="card-title">Featured Photo</h2>
+      <div class="photo-container" onclick="nextPhoto()">
+        <img id="weddingImg" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80" alt="Wedding Photograph" />
+        <div class="photo-overlay">
+          <p class="overlay-text" id="imgCaption">Click photo or use buttons to cycle through memories.</p>
+        </div>
+      </div>
+      <div class="gallery-controls">
+        <button class="btn" onclick="prevPhoto()">Previous</button>
+        <button class="btn" onclick="nextPhoto()">Next</button>
+      </div>
+    </section>
+
+    <!-- Embedded iFrame Section -->
+    <section class="card">
+      <h2 class="card-title">Interactive Embed</h2>
+      <div class="iframe-wrapper">
+        <!-- REPLACE THE 'src' ATTRIBUTE BELOW WITH YOUR DESIRED IFRAME URL -->
+        <iframe 
+          src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+          title="External Embedded Content"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
+      </div>
+      <p class="iframe-hint">You can embed videos, Google Maps venue locations, or external photo albums here.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Made with &hearts; &bull; Celebrating Love</p>
+  </footer>
+
+  <script>
+    // Gallery Data Array
+    const photos = [
+      {
+        url: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80",
+        caption: "The First Dance — Moments we will cherish forever."
+      },
+      {
+        url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1000&q=80",
+        caption: "Walking into our next chapter together."
+      },
+      {
+        url: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1000&q=80",
+        caption: "Surrounded by loved ones and warm wishes."
+      }
+    ];
+
+    let currentIndex = 0;
+
+    const imgElement = document.getElementById("weddingImg");
+    const captionElement = document.getElementById("imgCaption");
+
+    function updatePhoto(index) {
+      imgElement.style.opacity = "0.3";
+      setTimeout(() => {
+        imgElement.src = photos[index].url;
+        captionElement.innerText = photos[index].caption;
+        imgElement.style.opacity = "1";
+      }, 200);
+    }
+
+    function nextPhoto() {
+      currentIndex = (currentIndex + 1) % photos.length;
+      updatePhoto(currentIndex);
+    }
+
+    function prevPhoto() {
+      currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+      updatePhoto(currentIndex);
+    }
+  </script>
+
+</body>
+</html>
