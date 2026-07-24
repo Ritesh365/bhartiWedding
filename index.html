@@ -8,15 +8,15 @@
   <!-- Google Fonts for Elegant Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --gold: #D4AF37;
-      --gold-dark: #b89228;
-      --soft-white: rgba(255, 255, 255, 0.94);
+      --gold: #C59B27;
+      --gold-dark: #9E7A1B;
+      --soft-white: rgba(255, 255, 255, 0.96);
       --text-dark: #2C221E;
-      --shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      --shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     }
 
     * {
@@ -33,7 +33,7 @@
     }
 
     body {
-      background: linear-gradient(rgba(20, 15, 12, 0.4), rgba(20, 15, 12, 0.4)), 
+      background: linear-gradient(rgba(20, 15, 12, 0.45), rgba(20, 15, 12, 0.45)), 
                   url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat fixed;
       display: flex;
       flex-direction: column;
@@ -42,19 +42,22 @@
       overflow: hidden;
     }
 
-    /* Header Styling */
+    /* Prominent Glassmorphic Header */
     header {
       text-align: center;
-      margin-bottom: 1rem;
-      padding: 1rem 2rem;
+      margin-bottom: 1.2rem;
+      padding: 1.2rem 2rem 1.5rem 2rem;
       background: var(--soft-white);
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px);
       border-radius: 20px;
       box-shadow: var(--shadow);
-      border: 1px solid rgba(212, 175, 55, 0.4);
+      border: 2px solid var(--gold);
       width: 100%;
       max-width: 900px;
       flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .title-sub {
@@ -62,14 +65,14 @@
       font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 3px;
-      color: var(--gold);
-      font-weight: 600;
+      color: var(--gold-dark);
+      font-weight: 700;
       margin-bottom: 0.2rem;
     }
 
     header h1 {
       font-family: 'Great Vibes', cursive;
-      font-size: 3.2rem;
+      font-size: 3.4rem;
       color: var(--text-dark);
       font-weight: 400;
       line-height: 1.1;
@@ -79,39 +82,54 @@
       font-family: 'Playfair Display', serif;
       font-style: italic;
       font-size: 1.8rem;
-      color: var(--gold);
+      color: var(--gold-dark);
       margin: 0 0.5rem;
     }
 
-    /* Navigation Menu */
-    nav {
-      margin-top: 0.8rem;
+    /* High Visibility Navigation Bar */
+    nav.main-nav {
+      margin-top: 1.2rem;
       display: flex;
       justify-content: center;
+      align-items: center;
       gap: 1rem;
+      width: 100%;
+      background: rgba(245, 237, 220, 0.8);
+      padding: 0.5rem;
+      border-radius: 30px;
+      border: 1px solid var(--gold);
     }
 
     .nav-btn {
-      background: transparent;
-      border: 1px solid var(--gold);
+      background: #FFFFFF;
+      border: 2px solid var(--gold);
       color: var(--text-dark);
-      padding: 0.5rem 1.2rem;
-      border-radius: 20px;
+      padding: 0.6rem 1.5rem;
+      border-radius: 25px;
       font-family: 'Montserrat', sans-serif;
       font-size: 0.85rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease-in-out;
       text-transform: uppercase;
       letter-spacing: 1px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
     }
 
-    .nav-btn:hover, .nav-btn.active {
+    .nav-btn:hover {
+      background: #FAF0D7;
+      border-color: var(--gold-dark);
+      transform: translateY(-1px);
+    }
+
+    .nav-btn.active {
       background: var(--gold);
       color: #FFFFFF;
+      border-color: var(--gold-dark);
+      box-shadow: 0 4px 12px rgba(197, 155, 39, 0.4);
     }
 
-    /* Main Content */
+    /* Main Container */
     main {
       width: 100%;
       flex: 1;
@@ -210,7 +228,7 @@
       position: absolute;
       top: 10px;
       right: 10px;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       color: var(--text-dark);
       border: 1px solid var(--gold);
       border-radius: 50%;
@@ -262,24 +280,24 @@
 
     @media (max-width: 600px) {
       body { padding: 0.8rem; }
-      header { padding: 0.8rem 1rem; }
-      header h1 { font-size: 2.4rem; }
+      header { padding: 1rem; }
+      header h1 { font-size: 2.5rem; }
       header h1 span { font-size: 1.4rem; }
-      .nav-btn { padding: 0.4rem 0.8rem; font-size: 0.75rem; }
+      nav.main-nav { gap: 0.5rem; padding: 0.3rem; }
+      .nav-btn { padding: 0.5rem 0.8rem; font-size: 0.72rem; }
       .image-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.8rem; }
-      .download-btn { width: 32px; height: 32px; top: 6px; right: 6px; }
-      .download-btn svg { width: 15px; height: 15px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Header Section -->
+  <!-- Prominent Header Section -->
   <header>
     <p class="title-sub">The Wedding Celebration Of</p>
     <h1>Nisha <span>weds</span> Sumit</h1>
     
-    <nav>
+    <!-- Clearly Visible Top Navigation Bar -->
+    <nav class="main-nav">
       <button class="nav-btn active" onclick="switchTab('iframe-tab', this)">Interactive Gallery</button>
       <button class="nav-btn" onclick="switchTab('photos-tab', this)">More Photos</button>
     </nav>
@@ -287,7 +305,7 @@
 
   <!-- Main Container -->
   <main>
-    <!-- Tab 1: Foto Owl iFrame Section -->
+    <!-- Tab 1: iFrame Section -->
     <div id="iframe-tab" class="tab-content active">
       <div class="iframe-wrapper">
         <iframe 
@@ -301,10 +319,10 @@
       </div>
     </div>
 
-    <!-- Tab 2: Google Drive Media Gallery Section -->
+    <!-- Tab 2: Media Gallery Section -->
     <div id="photos-tab" class="tab-content">
       <div class="local-gallery-wrapper" id="galleryWrapper">
-        <!-- Google Drive Photo Sections will render here -->
+        <!-- Photo Sections render dynamically -->
       </div>
     </div>
   </main>
@@ -315,7 +333,7 @@
   </div>
 
   <script>
-    // Replace 'FILE_ID_X' placeholders below with actual Google Drive File IDs
+    // Replace 'FILE_ID_X' placeholders with actual Google Drive File IDs
     const photoCategories = [
       {
         title: "Haldi, Mehndi & Tilak",
