@@ -271,7 +271,7 @@
       transform: scale(1.06);
     }
 
-    /* Download Overlay Button */
+    /* Download Overlay Button inside Grid Card */
     .download-btn {
       position: absolute;
       top: 10px;
@@ -303,28 +303,130 @@
       fill: currentColor;
     }
 
-    /* Lightbox Modal */
+    /* --- Interactive Lightbox Modal with Next / Previous Framing --- */
     .lightbox {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.88);
+      background: rgba(15, 10, 8, 0.92);
+      backdrop-filter: blur(10px);
       z-index: 1000;
       justify-content: center;
       align-items: center;
-      padding: 2rem;
+      padding: 1.5rem;
     }
 
     .lightbox.active {
       display: flex;
     }
 
-    .lightbox img {
-      max-width: 90%;
-      max-height: 90%;
-      border-radius: 10px;
+    .lightbox-frame {
+      position: relative;
+      max-width: 90vw;
+      max-height: 85vh;
+      background: #111;
+      border: 3px solid var(--gold);
+      border-radius: 16px;
+      box-shadow: 0 0 35px rgba(197, 155, 39, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .lightbox-frame img {
+      max-width: 100%;
+      max-height: 75vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    .lightbox-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
       border: 2px solid var(--gold);
-      box-shadow: 0 0 30px rgba(197, 155, 39, 0.4);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+      z-index: 1010;
+      backdrop-filter: blur(5px);
+    }
+
+    .lightbox-nav-btn:hover {
+      background: var(--gold);
+      color: #000;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+
+    .lightbox-header-bar {
+      width: 100%;
+      background: rgba(20, 15, 12, 0.85);
+      padding: 0.6rem 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(197, 155, 39, 0.3);
+    }
+
+    .lightbox-counter {
+      color: var(--gold);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .lightbox-actions {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    .lightbox-action-btn {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: #FFFFFF;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lightbox-action-btn:hover {
+      background: var(--gold);
+      color: #000;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      color: #FFFFFF;
+      font-size: 2.2rem;
+      cursor: pointer;
+      z-index: 1020;
+      line-height: 1;
+      transition: color 0.2s ease;
+      text-shadow: 0 0 10px #000;
+    }
+
+    .lightbox-close:hover {
+      color: var(--gold);
     }
 
     @media (max-width: 600px) {
@@ -336,8 +438,9 @@
       .nav-btn { padding: 0.45rem 0.75rem; font-size: 0.68rem; }
       .photo-gallery-card { padding: 1rem; }
       .image-grid { grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); gap: 0.8rem; }
-      .download-btn { width: 32px; height: 32px; top: 6px; right: 6px; }
-      .download-btn svg { width: 14px; height: 14px; }
+      .lightbox-nav-btn { width: 38px; height: 38px; font-size: 1.1rem; }
+      .lightbox-prev { left: 8px; }
+      .lightbox-next { right: 8px; }
     }
   </style>
 </head>
@@ -399,9 +502,22 @@
     </div>
   </main>
 
-  <!-- Lightbox Modal -->
-  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-    <img id="lightboxImg" src="" alt="Full view">
+  <!-- Interactive Lightbox Modal -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <button class="lightbox-nav-btn lightbox-prev" onclick="prevLightboxPhoto(event)">&#10094;</button>
+
+    <div class="lightbox-frame">
+      <img id="lightboxImg" src="" alt="Full view">
+      <div class="lightbox-header-bar">
+        <span class="lightbox-counter" id="lightboxCounter">Photo 1 of 1</span>
+        <div class="lightbox-actions">
+          <button class="lightbox-action-btn" onclick="downloadCurrentPhoto()">Download</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="lightbox-nav-btn lightbox-next" onclick="nextLightboxPhoto(event)">&#10095;</button>
   </div>
 
   <script>
@@ -1394,9 +1510,19 @@
       </svg>
     `;
 
+    // Global Lightbox State Variables
+    let currentGalleryArray = [];
+    let currentPhotoIndex = 0;
+
     function downloadPhoto(event, photoUrl) {
-      event.stopPropagation();
+      if (event) event.stopPropagation();
       window.open(photoUrl, '_blank');
+    }
+
+    function downloadCurrentPhoto() {
+      if (currentGalleryArray.length > 0) {
+        window.open(currentGalleryArray[currentPhotoIndex], '_blank');
+      }
     }
 
     function getCachedGallery(cacheKey) {
@@ -1434,10 +1560,10 @@
         countEl.innerText = `${photosToRender.length} Photos`;
       }
 
-      photosToRender.forEach(path => {
+      photosToRender.forEach((path, index) => {
         const card = document.createElement('div');
         card.className = 'image-card';
-        card.onclick = () => openLightbox(path);
+        card.onclick = () => openLightbox(photosToRender, index);
 
         const img = document.createElement('img');
         img.src = path;
@@ -1477,21 +1603,58 @@
       localStorage.setItem('activeTab', tabId);
     }
 
-    // Initialize Galleries with Local Cache Key Versioning
-    renderGallery(haldiPhotos, 'haldiGrid', 'haldiCount', 'haldi_photos_cache_v2');
-    renderGallery(weddingPhotos, 'weddingGrid', 'weddingCount', 'wedding_photos_cache_v2');
-    initActiveTab();
-
-    function openLightbox(src) {
-      const lightbox = document.getElementById('lightbox');
-      const lightboxImg = document.getElementById('lightboxImg');
-      lightboxImg.src = src;
-      lightbox.classList.add('active');
+    // --- LIGHTBOX CONTROL FUNCTIONS ---
+    function openLightbox(array, index) {
+      currentGalleryArray = array;
+      currentPhotoIndex = index;
+      updateLightboxContent();
+      document.getElementById('lightbox').classList.add('active');
     }
 
     function closeLightbox() {
       document.getElementById('lightbox').classList.remove('active');
     }
+
+    function updateLightboxContent() {
+      const lightboxImg = document.getElementById('lightboxImg');
+      const counterEl = document.getElementById('lightboxCounter');
+      
+      if (currentGalleryArray.length > 0) {
+        lightboxImg.src = currentGalleryArray[currentPhotoIndex];
+        counterEl.innerText = `Photo ${currentPhotoIndex + 1} of ${currentGalleryArray.length}`;
+      }
+    }
+
+    function nextLightboxPhoto(e) {
+      if (e) e.stopPropagation();
+      if (currentGalleryArray.length > 0) {
+        currentPhotoIndex = (currentPhotoIndex + 1) % currentGalleryArray.length;
+        updateLightboxContent();
+      }
+    }
+
+    function prevLightboxPhoto(e) {
+      if (e) e.stopPropagation();
+      if (currentGalleryArray.length > 0) {
+        currentPhotoIndex = (currentPhotoIndex - 1 + currentGalleryArray.length) % currentGalleryArray.length;
+        updateLightboxContent();
+      }
+    }
+
+    // Keyboard Arrow Key & Escape Support
+    document.addEventListener('keydown', (e) => {
+      const lightbox = document.getElementById('lightbox');
+      if (lightbox.classList.contains('active')) {
+        if (e.key === 'ArrowRight') nextLightboxPhoto();
+        if (e.key === 'ArrowLeft') prevLightboxPhoto();
+        if (e.key === 'Escape') closeLightbox();
+      }
+    });
+
+    // Initialize Galleries with Local Cache Key Versioning
+    renderGallery(haldiPhotos, 'haldiGrid', 'haldiCount', 'haldi_photos_cache_v2');
+    renderGallery(weddingPhotos, 'weddingGrid', 'weddingCount', 'wedding_photos_cache_v2');
+    initActiveTab();
   </script>
 
 </body>
